@@ -19,8 +19,8 @@ namespace HorseRace
         private Random _random = new Random();
 
         // 말의 사각형과 텍스트 블록을 저장할 리스트
-        private List<Rectangle> _horses = new List<Rectangle>();
-        private List<TextBlock> _horseNumbers = new List<TextBlock>();
+        private List<Rectangle> _horses = new List<Rectangle>(); //Rectangle wpf에서 ui 사각형 그리는 도구
+        private List<TextBlock> _horseNumbers = new List<TextBlock>();  
 
         // 각 말의 위치와 결과를 저장할 리스트
         private List<int> _horsePositions = new List<int>();
@@ -36,7 +36,7 @@ namespace HorseRace
         {
             int horseCount;
 
-            // 이전 결과를 지우기 위해 ResultTextBlock의 텍스트를 빈 문자열로 설정
+            // 이전 결과를 지우기 위해 ResultTextBlock(경기결과)의 텍스트를 빈 문자열로 설정
             ResultTextBlock.Text = "";
 
             // 말의 마릿수 입력값을 확인하고 유효성을 검사
@@ -65,7 +65,7 @@ namespace HorseRace
             for (int i = 0; i < horseCount; i++)
             {
                 // 말의 사각형을 생성하고 설정
-                var horse = new Rectangle
+                var horse = new Rectangle // var은 타입을 자동으로 추론함. 지역변수에만 사용
                 {
                     Width = HorseWidth,
                     Height = HorseHeight,
@@ -107,10 +107,10 @@ namespace HorseRace
                 int index = i;
 
                 // 각 말이 이동하는 동작을 태스크로 실행
-                tasks.Add(Task.Run(() => MoveHorse(index)));
+                tasks.Add(Task.Run(() => MoveHorse(index)));//람다식
             }
 
-            // 모든 태스크가 완료된 후 결과를 표시
+            // 모든 태스크가 완료된 후(whenall) 결과를 표시
             Task.WhenAll(tasks).ContinueWith(t =>
             {
                 // UI 스레드에서 결과 표시
@@ -159,7 +159,7 @@ namespace HorseRace
         {
             // 말의 순위를 결정하기 위해 결과를 정렬
             var sortedResults = new List<int>(_results);
-            sortedResults.Sort((a, b) => _horsePositions[b].CompareTo(_horsePositions[a]));
+            
 
             // 결과 텍스트를 초기화하고 결과를 추가
             ResultTextBlock.Text = "경기 결과:\n";
