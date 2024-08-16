@@ -1,0 +1,20 @@
+﻿<Window x:Class="HorseRace.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Horse Race" Height="467" Width="800">
+    <Grid>
+        <StackPanel>
+            <TextBox x:Name="HorseCountTextBox" Width="200" Margin="10"
+                     Text="말의 마릿수를 입력하세요 2 ~ 8"
+                     GotFocus="HorseCountTextBox_GotFocus"
+                     LostFocus="HorseCountTextBox_LostFocus"/>
+            <Button Content="경기 시작" Width="200" Margin="10" Click="StartRace_Click"/>
+            <Canvas x:Name="RaceCanvas" Background="LightGray" Width="750" Height="230" Margin="10"/>
+
+            <!-- Wrap the TextBlock in a ScrollViewer -->
+            <ScrollViewer x:Name="ResultScrollViewer" Margin="10" VerticalScrollBarVisibility="Auto" Height="83">
+                <TextBlock x:Name="ResultTextBlock" TextWrapping="Wrap" Margin="5"/>
+            </ScrollViewer>
+        </StackPanel>
+    </Grid>
+</Window>
