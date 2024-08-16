@@ -88,9 +88,10 @@ namespace HorseRace
                 RaceCanvas.Children.Add(horse);
                 RaceCanvas.Children.Add(horseNumber);
 
-                // TextBlock을 Rectangle의 중앙에 위치시킵니다.
+                // TextBlock의 초기 위치를 설정
                 Canvas.SetTop(horseNumber, i * (HorseHeight + 10));
-                Canvas.SetLeft(horseNumber, (HorseWidth - 20) / 2); // 수평 중앙 정렬
+                // TextBlock의 위치를 말의 중앙으로 조정
+                Canvas.SetLeft(horseNumber, (HorseWidth - horseNumber.ActualWidth) / 2); // 수평 중앙 정렬
 
                 // 생성한 말과 텍스트 블록을 리스트에 추가
                 _horses.Add(horse);
@@ -133,6 +134,8 @@ namespace HorseRace
                 Dispatcher.Invoke(() =>
                 {
                     Canvas.SetLeft(_horses[index], _horsePositions[index]);
+                    // TextBlock의 위치도 업데이트
+                    Canvas.SetLeft(_horseNumbers[index], _horsePositions[index] + (HorseWidth - _horseNumbers[index].ActualWidth) / 2);
                 });
 
                 // 말의 위치를 업데이트하고 이동
@@ -146,6 +149,7 @@ namespace HorseRace
             Dispatcher.Invoke(() =>
             {
                 Canvas.SetLeft(_horses[index], RaceCanvas.ActualWidth - HorseWidth);
+                Canvas.SetLeft(_horseNumbers[index], RaceCanvas.ActualWidth - HorseWidth + (HorseWidth - _horseNumbers[index].ActualWidth) / 2); // TextBlock의 최종 위치 업데이트
                 _results[index] = index; // 말의 결과를 저장
             });
         }
