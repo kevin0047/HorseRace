@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace HorseRace
         // 각 말의 위치와 결과를 저장할 리스트
         private List<int> _horsePositions = new List<int>();
         private List<int> _results = new List<int>();
-
+        private int _finishedCount = 0; //말의 도착순위를 세는 카운트
         public MainWindow()
         {
             InitializeComponent();
@@ -59,8 +59,9 @@ namespace HorseRace
             _horses.Clear();
             _horseNumbers.Clear();
             _horsePositions.Clear();
+            _finishedCount = 0;//도착등수 카운트 초기화
             _results.Clear();
-
+            
             // 말의 수만큼 반복하여 말과 번호를 생성
             for (int i = 0; i < horseCount; i++)
             {
@@ -124,8 +125,9 @@ namespace HorseRace
         // 각 말이 경주를 하는 메서드
         private void MoveHorse(int index)
         {
-            
 
+
+            
             // 말이 결승선에 도달할 때까지 반복
             while (_horsePositions[index] < RaceCanvas.ActualWidth - HorseWidth)
             {
@@ -145,27 +147,27 @@ namespace HorseRace
                 Thread.Sleep(_random.Next(50, 150));
             }
 
-            // 결승선에 도달한 후 최종 위치 설정
+
             Dispatcher.Invoke(() =>
             {
                 Canvas.SetLeft(_horses[index], RaceCanvas.ActualWidth - HorseWidth);
-                Canvas.SetLeft(_horseNumbers[index], RaceCanvas.ActualWidth - HorseWidth + (HorseWidth - _horseNumbers[index].ActualWidth) / 2); // TextBlock의 최종 위치 업데이트
-                _results[index] = index; // 말의 결과를 저장
+                Canvas.SetLeft(_horseNumbers[index], RaceCanvas.ActualWidth - HorseWidth + (HorseWidth - _horseNumbers[index].ActualWidth) / 2);
+                _results[_finishedCount++] = index; // 도착한 순서대로 저장 _results리스트의 [말선착순카운트++] = 말번호
             });
         }
 
         // 경주 결과를 표시하는 메서드
         private void ShowResults()
         {
-            // 말의 순위를 결정하기 위해 결과를 정렬
-            var sortedResults = new List<int>(_results);
+            
+            var Results = new List<int>(_results);
             
 
             // 결과 텍스트를 초기화하고 결과를 추가
             ResultTextBlock.Text = "경기 결과:\n";
-            for (int i = 0; i < sortedResults.Count; i++)
+            for (int i = 0; i < Results.Count; i++)
             {
-                ResultTextBlock.Text += $"{i + 1} 등: 말 {sortedResults[i] + 1}번\n";
+                ResultTextBlock.Text += $"{i + 1} 등: 말 {Results[i] + 1}번\n";
             }
 
             // 스크롤 뷰어를 가장 위로 이동 (결과가 많이 길어질 수 있으므로)
